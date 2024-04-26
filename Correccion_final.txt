@@ -1,0 +1,64 @@
+// Definimos la clase Misión base
+class Mision {
+    constructor(nombre, encargadaPor, parametros) {
+        this.nombre = nombre;
+        this.encargadaPor = encargadaPor;
+        this.parametros = parametros;
+    }
+
+    esDificil() {
+        return false; // Por defecto, una misión no es difícil
+    }
+
+    puntos() {
+        return 0; // Por defecto, una misión no otorga puntos
+    }
+}
+
+// Definimos la clase para la misión de liberar una princesa
+class RescatePrincesa extends Mision {
+    constructor(encargadaPor, trolls) {
+        super("Liberar una princesa", encargadaPor, { trolls });
+    }
+
+    esDificil() {
+        return this.parametros.trolls === 4 || this.parametros.trolls === 5;
+    }
+
+    puntos() {
+        return this.parametros.trolls * 2;
+    }
+}
+
+// Definimos la clase para la misión de buscar un objeto mágico
+class BuscarObjetoMagico extends Mision {
+    constructor(encargadaPor, distancia) {
+        super("Buscar un objeto mágico", encargadaPor, { distancia });
+    }
+
+    esDificil() {
+        return this.parametros.distancia > 100;
+    }
+
+    puntos() {
+        return (this.parametros.distancia <= 50) ? 10 : 5;
+    }
+}
+
+// Creamos instancias de las misiones
+const misiones = [
+    new RescatePrincesa("Lord Farquaad", 4),
+    new BuscarObjetoMagico("Señor Gandalf", 40),
+    // Puedes agregar más misiones aquí
+];
+
+// Filtramos las misiones difíciles y calculamos el total de puntos de recompensa
+const misionesDificiles = misiones.filter(mision => mision.esDificil());
+const totalPuntosRecompensa = misiones.reduce((total, mision) => total + mision.puntos(), 0);
+
+// Mostramos las misiones difíciles y el total de puntos de recompensa
+console.log("Misiones difíciles:");
+misionesDificiles.forEach(mision => {
+    console.log(`${mision.nombre} (Encargada por: ${mision.encargadaPor})`);
+});
+console.log("Total de puntos de recompensa: " + totalPuntosRecompensa);
